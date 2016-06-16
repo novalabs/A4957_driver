@@ -1,0 +1,8 @@
+{
+  "name": "A4957_driver",
+  "namespace": "driver",
+  "description": "Allegro A4957 driver",
+  "sources": [
+    "A4957.cpp"
+  ]
+}
