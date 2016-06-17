@@ -5,6 +5,7 @@
  */
 
 #include <A4957_driver/A4957.hpp>
+#include <Core/MW/Thread.hpp>
 
 namespace actuators {
    A4957::A4957(
@@ -33,15 +34,19 @@ namespace actuators {
    bool
    A4957_SignMagnitude::init()
    {
+      _device._reset.clear();
+      Core::MW::Thread::sleep(Core::MW::Time::ms(5));
+
       return true;
    }
 
    bool
    A4957_SignMagnitude::start()
    {
-      _device._reset.clear();
       _device._channel0.enable();
       _device._channel1.enable();
+      _device._reset.set();
+      Core::MW::Thread::sleep(Core::MW::Time::ms(5));
 
       return true;
    }
@@ -49,9 +54,10 @@ namespace actuators {
    bool
    A4957_SignMagnitude::stop()
    {
+      _device._reset.clear();
       _device._channel0.disable();
       _device._channel1.disable();
-      _device._reset.set();
+      Core::MW::Thread::sleep(Core::MW::Time::ms(5));
 
       return true;
    }
@@ -61,7 +67,15 @@ namespace actuators {
       DataType& data
    )
    {
-      int16_t pwm = data * 4095; // TODO: check if max is 4095 or 4096
+      static const int16_t PWM_MAX = 4095; // TODO: check if max is 4095 or 4096
+
+      int16_t pwm = data * PWM_MAX;
+
+      if (pwm > PWM_MAX) {
+         pwm = PWM_MAX;
+      } else if (pwm <= -PWM_MAX) {
+         pwm = -PWM_MAX;
+      }
 
       if (pwm >= 0) {
          _device._channel0.set(pwm);
@@ -72,7 +86,7 @@ namespace actuators {
       }
 
       return true;
-   }
+   } // A4957_SignMagnitude::set
 
    bool
    A4957_SignMagnitude::waitUntilReady()
