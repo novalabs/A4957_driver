@@ -9,11 +9,12 @@
 
 namespace actuators {
    A4957::A4957(
+  		Core::HW::PWMMaster&  pwm,
       Core::HW::PWMChannel& channel0,
       Core::HW::PWMChannel& channel1,
       Core::HW::Pad&        reset,
       Core::HW::Pad&        fault
-   ) : _channel0(channel0), _channel1(channel1), _reset(reset), _fault(fault) {}
+   ) : _pwm(pwm), _channel0(channel0), _channel1(channel1), _reset(reset), _fault(fault) {}
 
    A4957_SignMagnitude::A4957_SignMagnitude(
       A4957& device
@@ -34,6 +35,9 @@ namespace actuators {
    bool
    A4957_SignMagnitude::init()
    {
+  	 _device._pwm.setFrequency(configuration.frequency);
+   	 _device._pwm.setPeriod(configuration.period);
+
       _device._reset.clear();
       Core::MW::Thread::sleep(Core::MW::Time::ms(5));
 
@@ -67,9 +71,9 @@ namespace actuators {
       DataType& data
    )
    {
-      static const int16_t PWM_MAX = 4095; // TODO: check if max is 4095 or 4096
+      int16_t PWM_MAX = _device._pwm.getPeriod();
 
-      int16_t pwm = data * PWM_MAX;
+      int16_t pwm = (data * configuration.kappa) * PWM_MAX;
 
       if (pwm > PWM_MAX) {
          pwm = PWM_MAX;

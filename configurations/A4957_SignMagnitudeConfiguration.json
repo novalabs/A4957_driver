@@ -1,0 +1,25 @@
+{
+  "name": "A4957_SignMagnitudeConfiguration",
+  "description": "A4957_SignMagnitudeConfiguration",
+  "namespace": "actuators",
+  "fields": [
+    {
+      "name": "kappa",
+      "description": "Scale factor (= normalization factor)",
+      "type": "FLOAT32",
+      "size": 1
+    },
+    {
+      "name": "frequency",
+      "description": "Frequency [Hz]",
+      "type": "UINT32",
+      "size": 1
+    },
+    {
+      "name": "period",
+      "description": "PWM Period (in clock cycles)",
+      "type": "UINT32",
+      "size": 1
+    }
+  ]
+}
