@@ -1,7 +1,7 @@
 {
   "name": "A4957_SignMagnitudeConfiguration",
   "description": "A4957_SignMagnitudeConfiguration",
-  "namespace": "actuators",
+  "namespace": "@",
   "fields": [
     {
       "name": "kappa",

@@ -6,79 +6,84 @@
 
 #pragma once
 
-#include <Configuration.hpp>
+#include <ModuleConfiguration.hpp>
 
-#include <Core/HW/PWM.hpp>
-#include <Core/HW/GPIO.hpp>
-#include <Core/MW/CoreActuator.hpp>
+#include <core/hw/PWM.hpp>
+#include <core/hw/GPIO.hpp>
+#include <core/mw/CoreActuator.hpp>
 
-#include <A4957_driver/A4957_SignMagnitudeConfiguration.hpp>
+#include <core/A4957_driver/A4957_SignMagnitudeConfiguration.hpp>
 
-namespace actuators {
-   class A4957
-   {
+namespace core {
+namespace A4957_driver {
+class A4957
+{
 public:
-      A4957(
-         Core::HW::PWMMaster&  pwm,
-         Core::HW::PWMChannel& channel0,
-         Core::HW::PWMChannel& channel1,
-         Core::HW::Pad&        reset,
-         Core::HW::Pad&        fault
-      );
+   A4957(
+      core::hw::PWMMaster&  pwm,
+      core::hw::PWMChannel& channel0,
+      core::hw::PWMChannel& channel1,
+      core::hw::Pad&        reset,
+      core::hw::Pad&        fault
+   );
 
-      virtual
-      ~A4957();
-
-public:
-      bool
-      probe();
+   virtual
+   ~A4957();
 
 public:
-      Core::HW::PWMMaster&  _pwm;
-      Core::HW::PWMChannel& _channel0;
-      Core::HW::PWMChannel& _channel1;
-      Core::HW::Pad&        _reset;
-      Core::HW::Pad&        _fault;
-   };
+   bool
+   probe();
 
-
-   class A4957_SignMagnitude:
-      public Core::MW::CoreActuator<float>
-   {
-public:
-      A4957_SignMagnitude(
-         A4957& device
-      );
-
-      virtual
-      ~A4957_SignMagnitude();
 
 public:
-      A4957_SignMagnitudeConfiguration configuration;
+   core::hw::PWMMaster&  _pwm;
+   core::hw::PWMChannel& _channel0;
+   core::hw::PWMChannel& _channel1;
+   core::hw::Pad&        _reset;
+   core::hw::Pad&        _fault;
+};
+
+
+class A4957_SignMagnitude:
+   public core::mw::CoreActuator<float>,
+   public core::mw::CoreConfigurable<core::A4957_driver::A4957_SignMagnitudeConfiguration>
+{
+public:
+   A4957_SignMagnitude(
+      const char* name,
+      A4957&      device
+   );
+
+   virtual
+   ~A4957_SignMagnitude();
 
 public:
-      bool
-      init();
+   bool
+   init();
 
-      bool
-      start();
+   bool
+   configure();
 
-      bool
-      stop();
+   bool
+   start();
 
-      bool
-      waitUntilReady();
+   bool
+   stop();
 
-      bool
-      set(
-         DataType& data
-      );
+   bool
+   waitUntilReady();
+
+   bool
+   set(
+      DataType& data
+   );
 
 
 protected:
-      Core::MW::Time _set_timestamp;
+   core::os::Time _set_timestamp;
 
 private:
-      A4957& _device;
-   };
+   A4957& _device;
+};
+}
 }
