@@ -75,7 +75,7 @@ public:
 
    bool
    set(
-      DataType& data
+      const DataType& data
    );
 
 

@@ -79,7 +79,7 @@ A4957_SignMagnitude::stop()
 
 bool
 A4957_SignMagnitude::set(
-   DataType& data
+   const DataType& data
 )
 {
    int16_t PWM_MAX = _device._pwm.getPeriod();
