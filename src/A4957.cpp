@@ -47,6 +47,10 @@ A4957_SignMagnitude::init()
 bool
 A4957_SignMagnitude::configure()
 {
+   if (!isConfigured()) {
+      return false;
+   }
+
    _device._pwm.setFrequency(configuration().frequency);
    _device._pwm.setPeriod(configuration().period);
 
