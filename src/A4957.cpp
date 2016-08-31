@@ -61,7 +61,6 @@ A4957_SignMagnitude::start()
    _device._channel0.enable();
    _device._channel1.enable();
    _device._reset.set();
-   core::os::Thread::sleep(core::os::Time::ms(5));
 
    return true;
 }
@@ -72,7 +71,6 @@ A4957_SignMagnitude::stop()
    _device._reset.clear();
    _device._channel0.disable();
    _device._channel1.disable();
-   core::os::Thread::sleep(core::os::Time::ms(5));
 
    return true;
 }
