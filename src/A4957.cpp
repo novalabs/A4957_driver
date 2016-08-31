@@ -84,9 +84,9 @@ A4957_SignMagnitude::set(
    const DataType& data
 )
 {
-   int16_t PWM_MAX = _device._pwm.getPeriod();
+   int32_t PWM_MAX = _device._pwm.getPeriod();
 
-   int16_t pwm = (data * configuration().kappa) * PWM_MAX;
+   int32_t pwm = data * PWM_MAX;
 
    if (pwm > PWM_MAX) {
       pwm = PWM_MAX;

@@ -4,12 +4,6 @@
   "namespace": "@",
   "fields": [
     {
-      "name": "kappa",
-      "description": "Scale factor (= normalization factor)",
-      "type": "FLOAT32",
-      "size": 1
-    },
-    {
       "name": "frequency",
       "description": "Frequency [Hz]",
       "type": "UINT32",
