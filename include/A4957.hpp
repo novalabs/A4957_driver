@@ -10,7 +10,7 @@
 
 #include <core/hw/PWM.hpp>
 #include <core/hw/GPIO.hpp>
-#include <core/mw/CoreActuator.hpp>
+#include <core/utils/BasicActuator.hpp>
 
 #include <core/A4957_driver/A4957_SignMagnitudeConfiguration.hpp>
 
@@ -45,7 +45,7 @@ public:
 
 
 class A4957_SignMagnitude:
-   public core::mw::CoreActuator<float>,
+   public core::utils::BasicActuator<float>,
    public core::mw::CoreConfigurable<core::A4957_driver::A4957_SignMagnitudeConfiguration>
 {
 public:
