@@ -19,71 +19,71 @@ namespace A4957_driver {
 class A4957
 {
 public:
-   A4957(
-      core::hw::PWMMaster&  pwm,
-      core::hw::PWMChannel& channel0,
-      core::hw::PWMChannel& channel1,
-      core::hw::Pad&        reset,
-      core::hw::Pad&        fault
-   );
+    A4957(
+        core::hw::PWMMaster&  pwm,
+        core::hw::PWMChannel& channel0,
+        core::hw::PWMChannel& channel1,
+        core::hw::Pad&        reset,
+        core::hw::Pad&        fault
+    );
 
-   virtual
-   ~A4957();
-
-public:
-   bool
-   probe();
-
+    virtual
+    ~A4957();
 
 public:
-   core::hw::PWMMaster&  _pwm;
-   core::hw::PWMChannel& _channel0;
-   core::hw::PWMChannel& _channel1;
-   core::hw::Pad&        _reset;
-   core::hw::Pad&        _fault;
+    bool
+    probe();
+
+
+public:
+    core::hw::PWMMaster&  _pwm;
+    core::hw::PWMChannel& _channel0;
+    core::hw::PWMChannel& _channel1;
+    core::hw::Pad&        _reset;
+    core::hw::Pad&        _fault;
 };
 
 
 class A4957_SignMagnitude:
-   public core::utils::BasicActuator<float>,
-   public core::mw::CoreConfigurable<core::A4957_driver::A4957_SignMagnitudeConfiguration>
+    public core::utils::BasicActuator<float>,
+    public core::mw::CoreConfigurable<core::A4957_driver::A4957_SignMagnitudeConfiguration>
 {
 public:
-   A4957_SignMagnitude(
-      const char* name,
-      A4957&      device
-   );
+    A4957_SignMagnitude(
+        const char* name,
+        A4957&      device
+    );
 
-   virtual
-   ~A4957_SignMagnitude();
+    virtual
+    ~A4957_SignMagnitude();
 
 public:
-   bool
-   init();
+    bool
+    init();
 
-   bool
-   configure();
+    bool
+    configure();
 
-   bool
-   start();
+    bool
+    start();
 
-   bool
-   stop();
+    bool
+    stop();
 
-   bool
-   waitUntilReady();
+    bool
+    waitUntilReady();
 
-   bool
-   set(
-      const DataType& data
-   );
+    bool
+    set(
+        const DataType& data
+    );
 
 
 protected:
-   core::os::Time _set_timestamp;
+    core::os::Time _set_timestamp;
 
 private:
-   A4957& _device;
+    A4957& _device;
 };
 }
 }
