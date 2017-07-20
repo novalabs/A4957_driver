@@ -20,8 +20,7 @@ A4957::A4957(
 A4957_SignMagnitude::A4957_SignMagnitude(
     const char* name,
     A4957&      device
-) : CoreConfigurable<core::A4957_driver::A4957_SignMagnitudeConfiguration>::CoreConfigurable(name),
-    _device(device) {}
+) : _device(device) {}
 
 A4957::~A4957()
 {}
@@ -47,21 +46,12 @@ A4957_SignMagnitude::init()
 bool
 A4957_SignMagnitude::configure()
 {
-    if (!isConfigured()) {
-        return false;
-    }
-
-    _device._pwm.setFrequency(configuration().frequency);
-    _device._pwm.setPeriod(configuration().period);
-
     return true;
 }
 
 bool
 A4957_SignMagnitude::start()
 {
-    CORE_ASSERT(isConfigured());
-
     _device._channel0.enable();
     _device._channel1.enable();
     _device._reset.set();
@@ -103,7 +93,33 @@ A4957_SignMagnitude::set(
     }
 
     return true;
-}       // A4957_SignMagnitude::set
+} // A4957_SignMagnitude::set
+
+bool
+A4957_SignMagnitude::setI(
+    const DataType& data
+)
+{
+    int32_t PWM_MAX = _device._pwm.getPeriod();
+
+    int32_t pwm = data * PWM_MAX;
+
+    if (pwm > PWM_MAX) {
+        pwm = PWM_MAX;
+    } else if (pwm <= -PWM_MAX) {
+        pwm = -PWM_MAX;
+    }
+
+    if (pwm >= 0) {
+        _device._channel0.setI(pwm);
+        _device._channel1.setI(0);
+    } else {
+        _device._channel0.setI(0);
+        _device._channel1.setI(-pwm);
+    }
+
+    return true;
+} // A4957_SignMagnitude::setI
 
 bool
 A4957_SignMagnitude::waitUntilReady()

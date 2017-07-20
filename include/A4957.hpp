@@ -12,7 +12,7 @@
 #include <core/hw/GPIO.hpp>
 #include <core/utils/BasicActuator.hpp>
 
-#include <core/A4957_driver/A4957_SignMagnitudeConfiguration.hpp>
+#include <core/common_msgs/Float32.hpp>
 
 namespace core {
 namespace A4957_driver {
@@ -45,8 +45,7 @@ public:
 
 
 class A4957_SignMagnitude:
-    public core::utils::BasicActuator<float>,
-    public core::mw::CoreConfigurable<core::A4957_driver::A4957_SignMagnitudeConfiguration>
+    public core::utils::BasicActuator<float>
 {
 public:
     A4957_SignMagnitude(
@@ -78,12 +77,31 @@ public:
         const DataType& data
     );
 
+    bool
+    setI(
+        const DataType& data
+    );
+
 
 protected:
     core::os::Time _set_timestamp;
 
 private:
     A4957& _device;
+
+public:
+    struct Converter {
+        using TO   = float;
+        using FROM = core::common_msgs::Float32;
+
+        static inline TO
+        _(
+            const FROM& from
+        )
+        {
+            return from.value;
+        }
+    };
 };
 }
 }
